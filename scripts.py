@@ -25,14 +25,24 @@ def create_commendation(schoolkid, subject):
                      'Великолепно!', 'Прекрасно!', 'Ты меня очень обрадовал!', 'Именно этого я давно ждал от тебя!',
                      'Сказано здорово – просто и ясно!', 'Ты, как всегда, точен!']
     commendation_text = random.choice(commendations)
+    lessons = Lesson.objects.filter(year_of_study=schoolkid.year_of_study, group_letter=schoolkid.group_letter,
+                                    subject__title=subject)
+    if not lessons.exists():
+        print(f'Предмет {subject} не найден!')
+        return
+
     lesson = Lesson.objects.filter(year_of_study=schoolkid.year_of_study, group_letter=schoolkid.group_letter,
                                    subject__title=subject).order_by('-date').first()
+    print(lesson)
     Commendation.objects.create(text=commendation_text, created=lesson.date, schoolkid=schoolkid,
                                 subject=lesson.subject, teacher=lesson.teacher)
     print(f'Добавлена похвала: {commendation_text}')
 
 
 def fix(full_name, subject):
+    if full_name == '':
+        print('Не введено имя')
+        return
     try:
         schoolkid = Schoolkid.objects.get(full_name__contains=full_name)
         fix_marks(schoolkid)
