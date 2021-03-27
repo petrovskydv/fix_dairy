@@ -37,7 +37,7 @@ def create_commendation(schoolkid, subject):
 
 
 def fix(full_name, subject):
-    if full_name == '':
+    if not full_name:
         print('Не введено имя')
         return
     try:
