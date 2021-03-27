@@ -9,13 +9,19 @@ from datacenter.models import Schoolkid
 
 def fix_marks(schoolkid):
     fixed_marks_number = Mark.objects.filter(schoolkid=schoolkid, points__in=[2, 3]).update(points=4)
-    print(f'Исправлено {fixed_marks_number} оценок')
+    if fixed_marks_number > 0:
+        print(f'Исправлено {fixed_marks_number} оценок')
+    else:
+        print('Плохих оценок нет!')
 
 
 def remove_chastisements(schoolkid):
     chastisements = Chastisement.objects.filter(schoolkid=schoolkid)
-    chastisements.delete()
-    print('Замечания удалены')
+    deleted_chastisements_number = chastisements.delete()[0]
+    if deleted_chastisements_number > 0:
+        print(f'Удалено {deleted_chastisements_number} замечаний')
+    else:
+        print('Замечания отсутствуют')
 
 
 def create_commendation(schoolkid, subject):
