@@ -1,7 +1,5 @@
 import random
 
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-
 from datacenter.models import Chastisement
 from datacenter.models import Commendation
 from datacenter.models import Lesson
@@ -45,7 +43,7 @@ def fix(full_name, subject):
         fix_marks(schoolkid)
         remove_chastisements(schoolkid)
         create_commendation(schoolkid, subject)
-    except MultipleObjectsReturned:
+    except Schoolkid.MultipleObjectsReturned:
         print(f'Найдено несколько учеников с именем {full_name}. Скрипт завершает работу.')
-    except ObjectDoesNotExist:
+    except Schoolkid.DoesNotExist:
         print(f'Ученик с именем {full_name} не найден. Скрипт завершает работу.')
