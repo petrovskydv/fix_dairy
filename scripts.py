@@ -25,18 +25,35 @@ def remove_chastisements(schoolkid):
 
 
 def create_commendation(schoolkid, subject):
-    commendations = ['Молодец!', 'Отлично!', 'Хорошо!', 'Гораздо лучше, чем я ожидал!', 'Ты меня приятно удивил!',
-                     'Великолепно!', 'Прекрасно!', 'Ты меня очень обрадовал!', 'Именно этого я давно ждал от тебя!',
-                     'Сказано здорово – просто и ясно!', 'Ты, как всегда, точен!']
+    commendations = ['Молодец!',
+                     'Отлично!',
+                     'Хорошо!',
+                     'Гораздо лучше, чем я ожидал!',
+                     'Ты меня приятно удивил!',
+                     'Великолепно!', 'Прекрасно!',
+                     'Ты меня очень обрадовал!',
+                     'Именно этого я давно ждал от тебя!',
+                     'Сказано здорово – просто и ясно!',
+                     'Ты, как всегда, точен!']
     commendation_text = random.choice(commendations)
 
-    lesson = Lesson.objects.filter(year_of_study=schoolkid.year_of_study, group_letter=schoolkid.group_letter,
-                                   subject__title=subject).order_by('-date').first()
+    lesson = Lesson.objects.filter(
+        year_of_study=schoolkid.year_of_study,
+        group_letter=schoolkid.group_letter,
+        subject__title=subject
+    ).order_by('-date').first()
+
     if not lesson:
         print(f'Предмет {subject} не найден!')
         return
-    Commendation.objects.create(text=commendation_text, created=lesson.date, schoolkid=schoolkid,
-                                subject=lesson.subject, teacher=lesson.teacher)
+
+    Commendation.objects.create(
+        text=commendation_text,
+        created=lesson.date,
+        schoolkid=schoolkid,
+        subject=lesson.subject,
+        teacher=lesson.teacher)
+
     print(f'Добавлена похвала: {commendation_text}')
 
 
